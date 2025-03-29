@@ -1,0 +1,44 @@
+{% extends "basefront.html.twig" %}
+
+{% block body %}
+    <h1>Gestion des Catégories</h1>
+
+    <!-- Mini-formulaire pour ajouter une nouvelle catégorie -->
+    <form method="post" action="{{ path('admin.categories.add') }}" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="name" class="form-control" placeholder="Nom de la catégorie" required>
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </div>
+        {% if error %}
+            <div class="text-danger mt-2">{{ error }}</div>
+        {% endif %}
+    </form>
+
+    <!-- Liste des catégories -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for categorie in categories %}
+                <tr>
+                    <td>{{ categorie.name }}</td>
+                    <td>
+                        <!-- Bouton Supprimer -->
+                        <form action="{{ path('admin.categories.delete', {id: categorie.id}) }}" method="post" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.id) }}">
+                            <button type="submit" class="btn btn-danger btn-sm" {% if categorie.getFormations|length > 0 %}disabled{% endif %}>Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2" class="text-center">Aucune catégorie trouvée.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
