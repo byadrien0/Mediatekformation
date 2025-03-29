@@ -1,0 +1,84 @@
+{% extends "basefront.html.twig" %}
+
+{% block body %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-left align-top" scope="col">
+                    Playlist<br />
+                    <a href="{{ path('playlists.sort', {champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true" aria-label="Trier par ordre croissant">←</a>
+                    <a href="{{ path('playlists.sort', {champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true" aria-label="Trier par ordre décroissant">→</a>
+                    <form class="form-inline mt-1" method="POST" action="{{ path('playlists.findallcontain', {champ:'name'}) }}">
+                        <div class="form-group mr-1 mb-2">
+                            <input type="text" class="sm" name="recherche"
+                                   value="{% if valeur|default and not table|default %}{{ valeur }}{% endif %}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('filtre_name') }}">
+                            <button type="submit" class="btn btn-info mb-2 btn-sm">Filtrer</button>
+                        </div>
+                    </form>
+                </th>
+                <th class="text-left align-top" scope="col">
+                    Catégories
+                    <form class="form-inline mt-1" method="POST" action="{{ path('playlists.findallcontain', {champ:'id', table:'categories'}) }}">
+                        <select class="form-select form-select-sm" name="recherche" id="recherche" onchange="this.form.submit()">
+                            <option value=""></option>
+                            {% for categorie in categories %}
+                                <option
+                                    {% if valeur|default and valeur==categorie.id %}
+                                        selected
+                                    {% endif %}
+                                    value="{{ categorie.id }}">{{ categorie.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </th>
+                <!-- MODIFICATION : Ajout d'une colonne pour le nombre de formations -->
+                <th class="text-center align-top" scope="col">
+                    Nombre de formations<br />
+                    <!-- MODIFICATION : Ajout des liens de tri pour le nombre de formations -->
+                    <a href="{{ path('playlists.sort', {champ:'formationCount', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true" aria-label="Trier par nombre de formations croissant">↑</a>
+                    <a href="{{ path('playlists.sort', {champ:'formationCount', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true" aria-label="Trier par nombre de formations décroissant">↓</a>
+                </th>
+                <th class="text-center align-top" scope="col">
+                    &nbsp;
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if playlists|length > 0 %}
+                {% for k in 0..playlists|length-1 %}
+                    <tr class="align-middle">
+                        <td>
+                            <h5 class="text-info">
+                                {{ playlists[k].name }}
+                            </h5>
+                        </td>
+                        <td class="text-left">
+                            {% set categories = playlists[k].categoriesplaylist %}
+                            {% if categories|length > 0 %}
+                                {% for c in categories %}
+                                    &nbsp;{{ c }}
+                                {% endfor %}
+                            {% else %}
+                                <span>Aucune catégorie</span>
+                            {% endif %}
+                        </td>
+                        <!-- MODIFICATION : Affichage du nombre de formations pour chaque playlist -->
+                        <td class="text-center">
+                            {{ playlists[k].formationCount }}
+                        </td>
+                        <td class="text-center">
+                            <a href="{{ path('playlists.showone', {id:playlists[k].id}) }}" class="btn btn-secondary" aria-label="Voir les détails de la playlist {{ playlists[k].name }}">Voir détail</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <!-- MODIFICATION : Mise à jour du colspan pour refléter le nombre correct de colonnes -->
+                <tr>
+                    <td colspan="4" class="text-center">Aucune playlist disponible</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+{% endblock %}

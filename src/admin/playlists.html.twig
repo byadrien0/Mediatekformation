@@ -1,0 +1,44 @@
+{# filepath: c:\wamp64\www\mediatekformation\templates\admin\playlists.html.twig #}
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h1>Gestion des Playlists</h1>
+
+    <!-- Bouton pour ajouter une playlist -->
+    <a href="{{ path('admin.playlists.add') }}" class="btn btn-primary mb-3">Ajouter une playlist</a>
+
+    <!-- Tableau des playlists -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Nombre de formations</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for playlist in playlists %}
+                <tr>
+                    <td>{{ playlist.name }}</td>
+                    <td>{{ playlist.description }}</td>
+                    <td>{{ playlist.getFormationCount() }}</td>
+                    <td>
+                        <!-- Bouton Modifier -->
+                        <a href="{{ path('admin.playlists.edit', {id: playlist.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+
+                        <!-- Bouton Supprimer -->
+                        <form action="{{ path('admin.playlists.delete', {id: playlist.id}) }}" method="post" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette playlist ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ playlist.id) }}">
+                            <button type="submit" class="btn btn-danger btn-sm" {% if playlist.getFormationCount() > 0 %}disabled{% endif %}>Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">Aucune playlist trouvée.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

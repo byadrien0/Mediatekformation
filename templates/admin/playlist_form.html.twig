@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h1>{{ playlist.id ? 'Modifier' : 'Ajouter' }} une Playlist</h1>
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+        <button type="submit" class="btn btn-primary">{{ playlist.id ? 'Modifier' : 'Ajouter' }}</button>
+    {{ form_end(form) }}
+
+    {% if playlist.id %}
+        <h2>Formations associées</h2>
+        <ul>
+            {% for formation in formations %}
+                <li>{{ formation.title }}</li>
+            {% else %}
+                <li>Aucune formation associée.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

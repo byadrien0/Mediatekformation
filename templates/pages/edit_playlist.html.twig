@@ -1,0 +1,17 @@
+<!-- filepath: c:\wamp64\www\mediatekformation\templates\pages\edit_playlist.html.twig -->
+{% extends "basefront.html.twig" %}
+
+{% block body %}
+    <h1>Modifier la Playlist</h1>
+    <form method="post" action="{{ path('playlists.edit', {id: playlist.id}) }}">
+        <div class="mb-3">
+            <label for="name" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ playlist.name }}">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description">{{ playlist.description }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+{% endblock %}

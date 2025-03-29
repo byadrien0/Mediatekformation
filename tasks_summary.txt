@@ -1,0 +1,59 @@
+### Tâche : Gestion des formations
+
+#### Demande
+1. Une page doit permettre de lister les formations avec :
+   - Un bouton pour supprimer une formation (avec confirmation).
+   - Un bouton pour modifier une formation.
+2. Lorsqu'une formation est supprimée, elle doit être retirée de la playlist associée.
+3. Les tris et filtres présents dans le front office doivent être disponibles dans le back office.
+4. Un bouton doit permettre d'accéder au formulaire d'ajout d'une formation.
+5. Les saisies doivent être contrôlées :
+   - Tous les champs sauf "description" et "catégories" sont obligatoires.
+   - La playlist et les catégories doivent être sélectionnées dans une liste.
+   - La date doit être sélectionnée et ne pas être postérieure à la date du jour.
+6. Le formulaire de modification doit être prérempli avec les données de la formation.
+7. La gestion des formations doit être opérationnelle et la BDD correctement mise à jour.
+
+#### Modifications effectuées
+1. **Entity Update**:
+   - Added getter and setter for `miniature` in `Formation` entity to resolve the `NoSuchPropertyException`.
+
+2. **Form Handling**:
+   - Ensured the `FormationType` form validates required fields and uses appropriate input types (e.g., date picker for `publishedAt`).
+
+3. **Controller Logic**:
+   - Implemented logic in `FormationsController` to handle:
+     - Adding a new formation.
+     - Editing an existing formation with prefilled data.
+     - Deleting a formation and removing it from the associated playlist.
+
+4. **Twig Templates**:
+   - Updated templates to include:
+     - Buttons for modifying and deleting formations.
+     - A button to access the add formation form.
+     - Tris and filtres similar to the front office.
+
+5. **Database Updates**:
+   - Verified that the database is updated correctly when formations are added, modified, or deleted.
+
+#### Bilan
+- **Temps estimé** : 6 heures.
+- **Temps réel** : 7 heures (1 heure supplémentaire due à debugging et tests).
+- **Diagramme de cas d'utilisation** : 
+  - Un diagramme a été créé pour illustrer les interactions entre l'utilisateur et les fonctionnalités de gestion des formations.
+- **Maquettes** :
+  - Les maquettes des pages de gestion des formations (liste, ajout, modification) ont été réalisées et validées.
+- **Arborescence des fichiers** :
+  - Les fichiers modifiés sont :
+    - `src\Entity\Formation.php`
+    - `src\Form\FormationType.php`
+    - `src\Controller\FormationsController.php`
+    - `templates\pages\formations.html.twig`
+    - `templates\pages\formation_edit.html.twig`
+  - Explications des modifications sont incluses dans les fichiers correspondants.
+
+#### Capture d'écran
+- Une capture d'écran du kanban montrant la tâche dans la colonne "In Progress" est jointe au bilan.
+
+#### Conclusion
+La gestion des formations est maintenant opérationnelle et répond aux attentes. Toutes les fonctionnalités demandées ont été implémentées et testées avec succès.

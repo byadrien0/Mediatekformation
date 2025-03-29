@@ -1,0 +1,63 @@
+{% extends "basefront.html.twig" %}
+
+{% block body %}
+    <h1>Liste des Formations</h1>
+
+    <!-- Formulaire de filtre -->
+    <form method="get" action="{{ path('formations.filter', { champ: 'title', table: '' }) }}" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="filter" class="form-control" placeholder="Rechercher une formation" value="{{ valeur|default('') }}">
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </div>
+    </form>
+
+    <a href="{{ path('formations.add') }}" class="btn btn-success mb-3">Ajouter une formation</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Formation</th>
+                <th>Playlist</th>
+                <th>Catégories</th>
+                <th>Date</th>
+                <th>Aperçu</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for formation in formations %}
+                <tr>
+                    <td><h5 class="text-info">{{ formation.title }}</h5></td>
+                    <td>{{ formation.playlist ? formation.playlist.name : 'Aucune' }}</td>
+                    <td>
+                        {% for categorie in formation.categories %}
+                            {{ categorie.name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{ formation.publishedatstring }}</td>
+                    <td>
+                        {% if formation.miniature %}
+                            <a href="{{ path('formations.showone', {id: formation.id}) }}">
+                                <img src="{{ formation.miniature }}" alt="Aperçu de {{ formation.title }}" class="img-thumbnail" style="max-width: 100px;">
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <!-- Bouton Modifier -->
+                        <a href="{{ path('formations.edit', {id: formation.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        
+                        <!-- Bouton Supprimer avec confirmation et token CSRF -->
+                        <form action="{{ path('formations.delete', {id: formation.id}) }}" method="post" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette formation ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ formation.id) }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Aucune formation trouvée.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

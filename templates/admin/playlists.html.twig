@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h1>Gestion des Playlists</h1>
+    <a href="{{ path('admin.playlists.add') }}" class="btn btn-primary mb-3">Ajouter une Playlist</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Nom
+                    <a href="{{ path('admin.playlists', {champ: 'name', ordre: 'ASC'}) }}">↑</a>
+                    <a href="{{ path('admin.playlists', {champ: 'name', ordre: 'DESC'}) }}">↓</a>
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for playlist in playlists %}
+                <tr>
+                    <td>{{ playlist.name }}</td>
+                    <td>
+                        <a href="{{ path('admin.playlists.edit', {id: playlist.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        <form method="post" action="{{ path('admin.playlists.delete', {id: playlist.id}) }}" style="display:inline;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ playlist.id) }}">
+                            <button type="submit" class="btn btn-danger btn-sm" {% if playlist.formations|length > 0 %}disabled{% endif %}>Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">Aucune playlist trouvée.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

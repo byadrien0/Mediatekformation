@@ -1,0 +1,12 @@
+{# File: templates/pages/formation_edit.html.twig #}
+{% extends "basefront.html.twig" %}
+
+{% block body %}
+    <h2>{{ formation.id ? 'Modifier la formation : ' ~ formation.title : 'Ajouter une nouvelle formation' }}</h2>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-success">{{ formation.id ? 'Enregistrer les modifications' : 'Ajouter la formation' }}</button>
+        <a href="{{ path('formations') }}" class="btn btn-secondary">Annuler</a>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "basefront.html.twig" %}
+
+{% block body %}
+    <div class="row mt-3">
+        <div class="col">
+            <h4 class="text-info mt-5">{{ playlist.name }}</h4>
+            <strong>Catégories : </strong>
+            {% if playlistcategories is not empty %}
+                {% set anccategorie = '' %}
+                {% for categorie in playlistcategories %}
+                    {{ categorie.name }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            {% else %}
+                <span>Aucune catégorie disponible</span>
+            {% endif %}
+            <br /><br />
+            <strong>Description :</strong><br />
+            {{ playlist.description|nl2br }}
+
+            <!-- MODIFICATION : Ajout de l'affichage du nombre de formations -->
+            <br /><br />
+            <strong>Nombre de formations :</strong> {{ playlist.getFormationCount() }}
+        </div>
+        <div class="col">
+            <h5 class="mt-5">Formations associées</h5>
+            {% if playlistformations is not empty %}
+                {% for formation in playlistformations %}
+                    <div class="row mt-1">
+                        <div class="col-md-auto">
+                            {% if formation.miniature %}
+                                <a href="{{ path('formations.showone', {id:formation.id}) }}">
+                                    <img src="{{ formation.miniature }}" alt="Image de la formation {{ formation.title }}" class="img-thumbnail" style="max-width: 100px;">
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <a href="{{ path('formations.showone', {id:formation.id}) }}"
+                               class="link-secondary text-decoration-none">
+                                {{ formation.title }}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Aucune formation disponible dans cette playlist.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

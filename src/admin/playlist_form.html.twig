@@ -1,0 +1,23 @@
+{# filepath: c:\wamp64\www\mediatekformation\templates\admin\playlist_form.html.twig #}
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h1>{{ playlist.id ? 'Modifier la playlist' : 'Ajouter une playlist' }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-success">{{ playlist.id ? 'Enregistrer les modifications' : 'Ajouter la playlist' }}</button>
+        <a href="{{ path('admin.playlists') }}" class="btn btn-secondary">Annuler</a>
+    {{ form_end(form) }}
+
+    {% if playlist.id %}
+        <h2 class="mt-4">Formations associées</h2>
+        <ul>
+            {% for formation in formations %}
+                <li>{{ formation.title }}</li>
+            {% else %}
+                <li>Aucune formation associée.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

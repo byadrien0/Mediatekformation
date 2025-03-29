@@ -1,0 +1,11 @@
+{# filepath: c:\wamp64\www\mediatekformation\templates\formations\add.html.twig #}
+{% extends "basefront.html.twig" %}
+
+{% block body %}
+    <h1>Ajouter une Formation</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-success">Ajouter</button>
+    {{ form_end(form) }}
+{% endblock %}

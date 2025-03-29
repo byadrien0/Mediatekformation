@@ -1,0 +1,31 @@
+{% extends "basefront.html.twig" %}
+
+{% block body %}
+    <div class="row mt-3">
+        <div class="col">
+            {% if formation.videoid %}
+                <div style="max-width: 560px; margin: 2px auto; text-align: center;">
+                    <iframe 
+                        src="https://www.youtube.com/embed/{{ formation.videoid }}" 
+                        width="100%" height="315"
+                        frameborder="0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture" 
+                        allowfullscreen title="Vidéo de la formation : {{ formation.title }}">
+                    </iframe>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="col">
+            <p>{{ formation.publishedatstring }}</p>
+            <h4 class="text-info mt-5">{{ formation.title }}</h4>
+            <strong>Playlist :</strong> {{ formation.playlist.name }}<br />
+            <strong>Catégories :</strong>
+            {% for categorie in formation.categories %}
+                {{ categorie.name }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+            <br /><br />
+            <strong>Description :</strong><br />
+            <p>{{ formation.description|nl2br }}</p>
+        </div>
+    </div>
+{% endblock %}
